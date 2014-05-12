@@ -1,2 +1,3 @@
-er-php-1
+Eventraider PHP SDK
 ========
+
