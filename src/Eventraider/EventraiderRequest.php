@@ -42,11 +42,11 @@ class EventraiderRequest {
     /**
      * @const String Eventraider API URL
      */
-    const URI = 'http://api.eventraider.com';
+    const URI = 'http://phalcon.api.eventraider.com/';
     /**
      * @const String OAuth API URL
      */
-    const OAUTH = 'http://oauth.eventraider.com';
+    //const OAUTH = 'http://oauth.eventraider.com';
 
     /**
      * @var EventraiderSession Session für die Anfragen
@@ -107,24 +107,24 @@ class EventraiderRequest {
         //open connection
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, $this::URI.$this->function.'/');
+        curl_setopt($ch, CURLOPT_URL, $this::URI.$this->function);
 
         //Header
         // FIXME - Auch HTML
         $headers = array(
-            'Accept: text/json',
-            'ER-API-No: 1.0'
+            'Accept: application/json',
+            'ER-API-No: '.$this->api_version
         );
-
         $token = $this->session->getToken();
+
         if (empty($token)) {
 
-            throw new EventraiderException("Es wurde kein Token gefunden.\nToken mit EventraiderSession generieren");
+            throw new EventraiderException("Es wurde kein Token gefunden.\nToken mit der EventraiderSession Klasse generieren");
 
         }
 
-        $auth = 'Authorization: Bearer '.$token;
-        $headers[count($headers)] = $auth;
+        curl_setopt($ch, CURLOPT_USERPWD, $token);
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
 
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
@@ -174,7 +174,6 @@ class EventraiderRequest {
 
         $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
-
         $response = json_decode($body, true);
 
         if ($http_status != 200 && $http_status != 201) {
@@ -184,83 +183,6 @@ class EventraiderRequest {
         }
 
         return new EventraiderResponse($this, $http_status, $response['msg']);
-
-    }
-
-    /**
-     * Führt einen Zugriff auf die OAuth API aus.
-     *
-     * @return String Token
-     * @throws EventraiderException
-     */
-    public function login()
-    {
-
-        if (!extension_loaded('curl')) {
-
-            //  cURL installieren (UNIX):
-            //  apt-get install php5-curl
-            //  /etc/init.d/apache2 restart
-            throw new EventraiderException("cURL muss als PHP Extension installiert sein.");
-
-        }
-
-        //open connection
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, $this::OAUTH.$this->function);
-
-        //Header
-        /* TODO: HTML */
-        $headers = array(
-            'Accept: text/json',
-            'ER-API-No: '.$this->api_version
-        );
-
-        $token = $this->session->getToken();
-
-        curl_setopt($ch, CURLOPT_USERPWD, $token);
-        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-        curl_setopt($ch, CURLOPT_HEADER, 1);
-
-        //data
-        if ($this->method == 'POST') {
-
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-
-        } else if ($this->method == 'DELETE') {
-
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
-
-        }
-
-        $result = curl_exec($ch);
-
-        if (curl_errno($ch) > 0) {
-
-            throw new EventraiderException('Request failed: '.curl_error($ch));
-
-        }
-
-        // OAuth token
-        $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-        $body = substr($result, $header_size);
-
-        $http_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
-
-        $response = json_decode($body, true);
-
-        if ($http_status != 200 && $http_status != 201) {
-
-            throw new EventraiderException($response['msg'], $http_status);
-
-        }
-
-        return $response['msg']['access_token'];
 
     }
 

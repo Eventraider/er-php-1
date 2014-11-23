@@ -65,7 +65,7 @@ class EventraiderLocation {
      */
     public function getLatitude()
     {
-        return $this->data['locationX'];
+        return $this->data['latitude'];
     }
 
     /**
@@ -75,7 +75,7 @@ class EventraiderLocation {
      */
     public function getLongitude()
     {
-        return $this->data['locationY'];
+        return $this->data['longitude'];
     }
 
     /**

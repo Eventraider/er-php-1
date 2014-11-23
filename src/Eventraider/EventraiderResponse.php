@@ -63,6 +63,11 @@ class EventraiderResponse {
         return $this->data;
     }
 
+    public function getCode()
+    {
+        return $this->code;
+    }
+
     /**
      * Erstellt ein EventraiderLocation Object
      *

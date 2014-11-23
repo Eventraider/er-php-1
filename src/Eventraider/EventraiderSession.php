@@ -35,7 +35,7 @@ namespace Eventraider;
 class EventraiderSession {
 
     /**
-     * @var String Token für die OAuth API
+     * @var String Token
      */
     private $token;
 
@@ -47,7 +47,7 @@ class EventraiderSession {
     }
 
     /**
-     * Fragt einen Token bei der OAuth API, mit dem API_KEY und API_SECRET, an.
+     * Fügt einen Token hinzu.
      *
      * @param String $api_key
      * @param String $api_secret
@@ -63,18 +63,6 @@ class EventraiderSession {
         }
 
         $this->token = $api_key.':'.$api_secret;
-
-        //require_once ER_SDK_DIR.'EventraiderRequest.php';
-        $request = new EventraiderRequest($this, '/clients/token/?scope=api', 'POST');
-        try {
-
-            $this->token = $request->login();
-
-        } catch (EventraiderException $e) {
-
-            throw $e;
-
-        }
 
     }
 
