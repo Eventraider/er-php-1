@@ -10,13 +10,31 @@ Benutzung
 Dieses Beispiel zeigt, wie ein Event erstellt werden kann.
 
 ```php
+
+namespace Eventraider\demo;
+use Eventraider;
+
+define ('PRINT_ERROR', true);
+define ('LOG_ERROR', true);
+define ('ER_SDK_DIR', __DIR__.'PFAD/ZUR/SDK' );
+
+require_once(ER_SDK_DIR.'EventraiderSession.php');
+require_once(ER_SDK_DIR.'EventraiderRequest.php');
+require_once(ER_SDK_DIR.'EventraiderResponse.php');
+require_once(ER_SDK_DIR.'EventraiderException.php');
+require_once(ER_SDK_DIR.'EventraiderLocation.php');
+
 try {
 
 	$session = new \Eventraider\EventraiderSession('APP_KEY', 'APP_SECRET');
 
 } catch (\Eventraider\EventraiderException $e) {
 
-	echo 'Fehler: '.$e->getMessage()."\n";
+	if (PRINT_ERROR)
+            echo 'Fehler: '.$e->getMessage()."\n";
+
+        if (LOG_ERROR)
+            error_log('Eventraider: '.$e->getMessage());
 
 }
 
@@ -29,7 +47,12 @@ if (isset($session)) {
 
 	} catch (\Eventraider\EventraiderException $e) {
 
-		echo 'Fehler: '.$e->getMessage()."\n";
+		if (PRINT_ERROR)
+                echo 'Fehler: '.$e->getMessage()."\n";
+
+            	if (LOG_ERROR)
+                	error_log('Eventraider: '.$e->getMessage());
+                
 		exit();
 
 	}
@@ -37,8 +60,14 @@ if (isset($session)) {
 
 	if ($location->getID() < 0) {
 
-		echo "Fatal error: Es wurde noch kein Standort gesetzt. \n
-		Melde dich mit deinem Konto an und stelle unter \"Einstellungen > Marker\" deinen Standort ein.";
+		if (PRINT_ERROR)
+                echo "Fehler: Es wurde noch kein Standort gesetzt. \n
+Melde dich mit deinem Konto an und stelle unter \"Einstellungen > Marker\" deinen Standort ein.";
+
+            if (LOG_ERROR)
+                error_log('Eventraider: Es wurde noch kein Standort gesetzt. \n
+Melde dich mit deinem Konto an und stelle unter \"Einstellungen > Marker\" deinen Standort ein.');
+
 		exit();
 
 	}
@@ -63,16 +92,37 @@ if (isset($session)) {
 
 	} catch (\Eventraider\EventraiderException $e) {
 
-		echo 'Fehler: '.$e->getMessage()."\n";
+		if (PRINT_ERROR)
+                echo 'Fehler: '.$e->getMessage()."\n";
+
+            	if (LOG_ERROR)
+                	error_log('Eventraider: '.$e->getMessage());
+                
 		exit();
 
 	}
 
-	echo $response->getData()."\n";
+	if ($response->getCode() != 201) {
+
+            if (PRINT_ERROR)
+                echo "Fehler: Das Event \"".$_POST['title']."\" konnte nicht erstellt werden.\n";
+
+            if (LOG_ERROR)
+                error_log('Eventraider: Das Event "'.$_POST['title'].'" konnte nicht erstellt werden.');
+
+        } else {
+        
+        	echo $response->getData()."\n";
+        
+        }
 
 } else {
 
-	echo "Session konnte nicht initialisiert werden.\n";
+	if (PRINT_ERROR)
+            echo "Fehler: Session konnte nicht initialisiert werden.\n";
+
+        if (LOG_ERROR)
+            error_log('Eventraider: Session konnte nicht initialisiert werden.');
 
 }
 ```
