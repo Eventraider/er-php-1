@@ -133,23 +133,42 @@ Melde dich mit deinem Konto an und stelle unter \"Einstellungen > Marker\" deine
 Schnittstelle
 --------------
 
-/me/... ausnahme
+\Eventraider\EventraiderRequest($session, URI, TYPE, POST);
 
-Parameter typen: Time
+/me/... ist eine Umleitung auf /page/{ID}/... bezogen auf die Session.
+
+Parameter typen:
+ * Image: Ein Bild als File-Objekt. Erlaubt sind jpeg, jpg und png.
+ * String: Eine Zeichenkette
+ * Time: Uhrzeit im Format hh:mm
+ * Double: Eine Zahl mit Nachkommastellen
+ * Int: Eine Zahl ohne Nachkommastellen
 
 | URI                            | TYPE   | POST  |  Notiz  |
 | ------------------------------ | ------ | ----- |  ------ |
-| stream[/{OFFSET}]              | GET    |       |         |
-| raider/{ID}                    | GET    |       |         |
-| raider/{ID}/stream[/{OFFSET}]  | GET    |       |         |
-| raider/{ID}/follows[/{OFFSET}] | GET    |       |         |
-| page/{ID}                      | GET    |       |         |
-| page/{ID}/follow               | POST   |       |         |
-| page/{ID}/follow               | DELETE |       |         |
-| page/{ID}/events[/{OFFSET}]    | GET    |       |         |
-| page/{ID}/images[/{OFFSET}]    | GET    |       |         |
-| page/{ID}/location             | GET    |       |         |
-| page/{ID}/image                | POST   | file:Image | Ändert das Seiten Banner. |
-| page/{ID}/images[/{OFFSET}]    | GET    |       |         |
-| event                          | POST   | title:String{3-36}<br />start:Time<br />end:Time<br />lat:Double{-180 - 180}<br />lng:Double{-180 - 180} |        |
-| event/{ID}                     | GET    |       |         |
+| /stream[/{OFFSET}]             | GET    |       |         |
+| /raider/{ID}                   | GET    |       |         |
+| /raider/{ID}/stream[/{OFFSET}] | GET    |       |         |
+| /raider/{ID}/follows[/{OFFSET}]| GET    |       |         |
+| /page/{ID}                     | GET    |       |         |
+| /page/{ID}/follow              | POST   |       |         |
+| /page/{ID}/follow              | DELETE |       |         |
+| /page/{ID}/events[/{OFFSET}]   | GET    |       |         |
+| /page/{ID}/images[/{OFFSET}]   | GET    |       |         |
+| /page/{ID}/location            | GET    |       |         |
+| /page/{ID}/image               | POST   | file:Image | Ändert das Seiten Banner. |
+| /page/{ID}/images[/{OFFSET}]   | GET    |       |         |
+| /event                         | POST   | title:String{3-36}<br />start:Time<br />end:Time<br />lat:Double{-180-180}<br />lng:Double{-180-180} |        |
+| /event/{ID}                    | GET    |       |         |
+| /event/{ID}                    | PUT    | description:String | Ändert die Event Beschreibung |
+| /event/{ID}/image              | POST   | file:Image |         |
+| /event/{ID}/timer              | POST   | name:String{3-36}<br />duration:Int<br />start:Time |         |
+| /event/{ID}/timer[/{OFFSET}]   | GET    |       |         |
+| /event/{ID}/timer/{timerID}    | DELETE |       |         |
+| /event/{ID}/invite             | POST   | email:String | Mehrere Emails können mit einem ";" getrennt werden |
+| /event/{ID}/images[/{OFFSET}]  | GET    |       |         |
+
+
+
+
+
