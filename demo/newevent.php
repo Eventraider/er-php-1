@@ -3,13 +3,18 @@
 namespace Eventraider\demo;
 use Eventraider;
 
-define ('ER_SDK_DIR', __DIR__.'/../' );
+define ('PRINT_ERROR', true);
+define ('LOG_ERROR', true);
+define ('ER_SDK_DIR', __DIR__.'/../1.1/' );
 
 require_once(ER_SDK_DIR.'EventraiderSession.php');
 require_once(ER_SDK_DIR.'EventraiderRequest.php');
 require_once(ER_SDK_DIR.'EventraiderResponse.php');
 require_once(ER_SDK_DIR.'EventraiderException.php');
 require_once(ER_SDK_DIR.'EventraiderLocation.php');
+
+//Bei Problemen oder Fehlern die '//' der nächsten Zeile entfernen
+//ini_set('display_errors', 1);
 
 ?>
 
@@ -27,38 +32,54 @@ require_once(ER_SDK_DIR.'EventraiderLocation.php');
 
 if (isset($_FILES['image_file'])) {
 
-
     try {
 
-        $session = new \Eventraider\EventraiderSession('APP_KEY', 'APP_SECRET');
+        //Unter Einstellungen > API werden die API Zugangsdaten angezeigt
+        $session = new \Eventraider\EventraiderSession('5a3929434009ed4438f046a47d0c678f', 'f56c8c82f2a325ccfabb137c4735ca68');
 
     } catch (\Eventraider\EventraiderException $e) {
 
-        echo 'Fehler: '.$e->getMessage()."\n";
+        if (PRINT_ERROR)
+            echo 'Fehler: '.$e->getMessage()."\n";
+
+        if (LOG_ERROR)
+            error_log('Eventraider: '.$e->getMessage());
 
     }
 
     if (isset($session)) {
 
-        $request = new \Eventraider\EventraiderRequest($session, '/me/location', 'GET', array('ID' => -1));
+        //event location holen
+        $request = new \Eventraider\EventraiderRequest($session, 'me/location', 'GET', array('ID' => -1));
         try {
 
             $response = $request->execute();
 
         } catch (\Eventraider\EventraiderException $e) {
 
-            echo 'Fehler: '.$e->getMessage()."\n";
+            if (PRINT_ERROR)
+                echo 'Fehler: '.$e->getMessage()."\n";
+
+            if (LOG_ERROR)
+                error_log('Eventraider: '.$e->getMessage());
+
             unset($_FILES['image_file']);
             echo '<a href="javascript:window.location.href=window.location.href">zurück</a>';
             exit();
 
         }
+
         $location = $response->getLocationObject();
 
         if ($location->getID() < 0) {
 
-            echo "Fatal error: Es wurde noch kein Standort gesetzt. \n
+            if (PRINT_ERROR)
+                echo "Fehler: Es wurde noch kein Standort gesetzt. \n
             Melde dich mit deinem Konto an und stelle unter \"Einstellungen > Marker\" deinen Standort ein.";
+
+            if (LOG_ERROR)
+                error_log('Eventraider: Es wurde noch kein Standort gesetzt. \n
+            Melde dich mit deinem Konto an und stelle unter \"Einstellungen > Marker\" deinen Standort ein.');
 
         }
 
@@ -66,36 +87,56 @@ if (isset($_FILES['image_file'])) {
 
         $event = array(
             'date' => $date,
-            'name' => $_POST['title'],
-            'timeStart' => $_POST['open'],
-            'timeEnd' => $_POST['close'],
+            'title' => $_POST['title'],
+            'start' => $_POST['open'],
+            'end' => $_POST['close'],
             'locationID' => $location->getID(),
             'image' => $_FILES['image_file'],
             'description' => $_POST['description'],
             'license' => null
         );
 
-        $request = new \Eventraider\EventraiderRequest($session, '/event', 'POST', $event);
+        $request = new \Eventraider\EventraiderRequest($session, 'event', 'POST', $event);
         try {
 
             $response = $request->execute();
 
         } catch (\Eventraider\EventraiderException $e) {
 
-            echo 'Fehler: '.$e->getMessage()."\n";
+            if (PRINT_ERROR)
+                echo 'Fehler: '.$e->getMessage()."\n";
+
+            if (LOG_ERROR)
+                error_log('Eventraider: '.$e->getMessage());
+
             unset($_FILES['image_file']);
             echo '<a href="javascript:window.location.href=window.location.href">zurück</a>';
             exit();
 
         }
 
-        echo $response->getData()."\n";
+        if ($response->getCode() != 201) {
+
+            if (PRINT_ERROR)
+                echo "Fehler: Das Event \"".$_POST['title']."\" konnte nicht erstellt werden.\n";
+
+            if (LOG_ERROR)
+                error_log('Eventraider: Das Event "'.$_POST['title'].'" konnte nicht erstellt werden.');
+
+        }
 
     } else {
 
-        echo "Session konnte nicht initialisiert werden.\n";
+        if (PRINT_ERROR)
+            echo "Fehler: Session konnte nicht initialisiert werden.\n";
+
+        if (LOG_ERROR)
+            error_log('Eventraider: Session konnte nicht initialisiert werden.');
 
     }
+
+    if (PRINT_ERROR)
+        echo "Das Event wurde hochgeladen.\n";
 
     unset($_FILES['image_file']);
     echo '<a href="javascript:window.location.href=window.location.href">zurück</a>';
