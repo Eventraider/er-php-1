@@ -2,7 +2,7 @@ Eventraider SDK - PHP
 ========
 
 Die Eventraider SDK ermöglicht einen Zugriff auf die Eventraider API.<br />
-Beispiel sind unter "demo" zu finden.<br />
+Beispiele sind unter "demo" zu finden.<br />
 <br />
 Die Zugangsdaten befinden sich unter Einstellungen -> API, der jeweiligen Seite.
 
