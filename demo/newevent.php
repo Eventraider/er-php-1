@@ -35,7 +35,7 @@ if (isset($_FILES['image_file'])) {
     try {
 
         //Unter Einstellungen > API werden die API Zugangsdaten angezeigt
-        $session = new \Eventraider\EventraiderSession('5a3929434009ed4438f046a47d0c678f', 'f56c8c82f2a325ccfabb137c4735ca68');
+        $session = new \Eventraider\EventraiderSession('APP_KEY', 'APP_SECRET');
 
     } catch (\Eventraider\EventraiderException $e) {
 
