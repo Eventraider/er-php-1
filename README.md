@@ -4,7 +4,7 @@ Eventraider SDK - PHP
 Die Eventraider SDK ermöglicht einen Zugriff auf die Eventraider API.<br />
 Beispiel sind unter "demo" zu finden.
 
-Benutzung
+Beispiel
 --------------
 
 Dieses Beispiel zeigt, wie ein Event erstellt werden kann.
@@ -126,3 +126,16 @@ Melde dich mit deinem Konto an und stelle unter \"Einstellungen > Marker\" deine
 
 }
 ```
+
+Schnittstelle
+--------------
+
+/me/... ausnahme
+
+| URI                            | TYPE   | POST  | GET   | Notiz  |
+| ------------------------------ | ------ | ----- | ----- | ------ |
+| stream[/{OFFSET}]              | POST   |       |       |        |
+| raider/{ID}                    | POST   |       |       |        |
+| raider/{ID}/stream[/{OFFSET}]  | POST   |       |       |        |
+| raider/{ID}/follows[/{OFFSET}] | POST   |       |       |        |
+| page/{ID}                      | POST   |       |       |        |
