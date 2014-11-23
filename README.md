@@ -2,7 +2,10 @@ Eventraider SDK - PHP
 ========
 
 Die Eventraider SDK ermöglicht einen Zugriff auf die Eventraider API.<br />
-Beispiel sind unter "demo" zu finden.
+Beispiel sind unter "demo" zu finden.<br />
+<br />
+Die Zugangsdaten befinden sich unter Einstellungen -> API, der jeweiligen Seite.
+
 
 Beispiel
 --------------
@@ -132,10 +135,17 @@ Schnittstelle
 
 /me/... ausnahme
 
-| URI                            | TYPE   | POST  | GET   | Notiz  |
-| ------------------------------ | ------ | ----- | ----- | ------ |
-| stream[/{OFFSET}]              | POST   |       |       |        |
-| raider/{ID}                    | POST   |       |       |        |
-| raider/{ID}/stream[/{OFFSET}]  | POST   |       |       |        |
-| raider/{ID}/follows[/{OFFSET}] | POST   |       |       |        |
-| page/{ID}                      | POST   |       |       |        |
+| URI                            | TYPE   | POST  | GET   | File   | Notiz  |
+| ------------------------------ | ------ | ----- | ----- | ------ | ------ |
+| stream[/{OFFSET}]              | GET    |       |       |        |        |
+| raider/{ID}                    | GET    |       |       |        |        |
+| raider/{ID}/stream[/{OFFSET}]  | GET    |       |       |        |        |
+| raider/{ID}/follows[/{OFFSET}] | GET    |       |       |        |        |
+| page/{ID}                      | GET    |       |       |        |        |
+| page/{ID}/follow               | POST   |       |       |        |        |
+| page/{ID}/follow               | DELETE |       |       |        |        |
+| page/{ID}/events[/{OFFSET}]    | GET    |       |       |        |        |
+| page/{ID}/images[/{OFFSET}]    | GET    |       |       |        |        |
+| page/{ID}/location             | GET    |       |       |        |        |
+| page/{ID}/image                | POST   |       |       |file:Image| Ändert das Seiten Banner |
+| page/{ID}/images[/{OFFSET}]    | GET    |       |       |        |        |
