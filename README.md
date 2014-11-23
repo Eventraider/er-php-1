@@ -135,6 +135,8 @@ Schnittstelle
 
 /me/... ausnahme
 
+Parameter typen: Time
+
 | URI                            | TYPE   | POST  | GET   | File   | Notiz  |
 | ------------------------------ | ------ | ----- | ----- | ------ | ------ |
 | stream[/{OFFSET}]              | GET    |       |       |        |        |
@@ -147,5 +149,7 @@ Schnittstelle
 | page/{ID}/events[/{OFFSET}]    | GET    |       |       |        |        |
 | page/{ID}/images[/{OFFSET}]    | GET    |       |       |        |        |
 | page/{ID}/location             | GET    |       |       |        |        |
-| page/{ID}/image                | POST   |       |       |file:Image| Ändert das Seiten Banner |
+| page/{ID}/image                | POST   |       |       | file:Image | Ändert das Seiten Banner. |
 | page/{ID}/images[/{OFFSET}]    | GET    |       |       |        |        |
+| event                          | POST   | title:String{3-36}<br />start:Time<br />end:Time<br />lat:Double{-180 - 180}|       |        |        |
+| event/{ID}                     | GET    |       |       |        |        |
