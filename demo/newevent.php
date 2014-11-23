@@ -5,7 +5,7 @@ use Eventraider;
 
 define ('PRINT_ERROR', true);
 define ('LOG_ERROR', true);
-define ('ER_SDK_DIR', __DIR__.'/../1.1/' );
+define ('ER_SDK_DIR', __DIR__.'/../src/Eventraider/' );
 
 require_once(ER_SDK_DIR.'EventraiderSession.php');
 require_once(ER_SDK_DIR.'EventraiderRequest.php');
