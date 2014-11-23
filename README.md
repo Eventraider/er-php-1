@@ -137,19 +137,19 @@ Schnittstelle
 
 Parameter typen: Time
 
-| URI                            | TYPE   | POST  | GET   | File   | Notiz  |
-| ------------------------------ | ------ | ----- | ----- | ------ | ------ |
-| stream[/{OFFSET}]              | GET    |       |       |        |        |
-| raider/{ID}                    | GET    |       |       |        |        |
-| raider/{ID}/stream[/{OFFSET}]  | GET    |       |       |        |        |
-| raider/{ID}/follows[/{OFFSET}] | GET    |       |       |        |        |
-| page/{ID}                      | GET    |       |       |        |        |
-| page/{ID}/follow               | POST   |       |       |        |        |
-| page/{ID}/follow               | DELETE |       |       |        |        |
-| page/{ID}/events[/{OFFSET}]    | GET    |       |       |        |        |
-| page/{ID}/images[/{OFFSET}]    | GET    |       |       |        |        |
-| page/{ID}/location             | GET    |       |       |        |        |
-| page/{ID}/image                | POST   |       |       | file:Image | Ändert das Seiten Banner. |
-| page/{ID}/images[/{OFFSET}]    | GET    |       |       |        |        |
-| event                          | POST   | title:String{3-36}<br />start:Time<br />end:Time<br />lat:Double{-180 - 180}|       |        |        |
-| event/{ID}                     | GET    |       |       |        |        |
+| URI                            | TYPE   | POST  |  Notiz  |
+| ------------------------------ | ------ | ----- |  ------ |
+| stream[/{OFFSET}]              | GET    |       |         |
+| raider/{ID}                    | GET    |       |         |
+| raider/{ID}/stream[/{OFFSET}]  | GET    |       |         |
+| raider/{ID}/follows[/{OFFSET}] | GET    |       |         |
+| page/{ID}                      | GET    |       |         |
+| page/{ID}/follow               | POST   |       |         |
+| page/{ID}/follow               | DELETE |       |         |
+| page/{ID}/events[/{OFFSET}]    | GET    |       |         |
+| page/{ID}/images[/{OFFSET}]    | GET    |       |         |
+| page/{ID}/location             | GET    |       |         |
+| page/{ID}/image                | POST   | file:Image | Ändert das Seiten Banner. |
+| page/{ID}/images[/{OFFSET}]    | GET    |       |         |
+| event                          | POST   | title:String{3-36}<br />start:Time<br />end:Time<br />lat:Double{-180 - 180}<br />lng:Double{-180 - 180} |        |
+| event/{ID}                     | GET    |       |         |
