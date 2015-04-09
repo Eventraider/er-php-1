@@ -42,11 +42,7 @@ class EventraiderRequest {
     /**
      * @const String Eventraider API URL
      */
-    const URI = 'http://phalcon.api.eventraider.com/';
-    /**
-     * @const String OAuth API URL
-     */
-    //const OAUTH = 'http://oauth.eventraider.com';
+    const URI = 'http://api.eventraider.com/';
 
     /**
      * @var EventraiderSession Session für die Anfragen
@@ -110,7 +106,6 @@ class EventraiderRequest {
         curl_setopt($ch, CURLOPT_URL, $this::URI.$this->function);
 
         //Header
-        // FIXME - Auch HTML
         $headers = array(
             'Accept: application/json',
             'ER-API-No: '.$this->api_version
@@ -129,8 +124,6 @@ class EventraiderRequest {
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, 1);
-
-        //FIXME - timeout
 
         //data
         if ($this->method == 'POST') {
