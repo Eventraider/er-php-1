@@ -3,6 +3,8 @@
 namespace Eventraider\demo;
 use Eventraider;
 
+define ('APP_KEY', null);
+define ('APP_SECRET', null);
 define ('PRINT_ERROR', true);
 define ('LOG_ERROR', true);
 define ('ER_SDK_DIR', __DIR__.'/../src/Eventraider/' );
@@ -83,7 +85,7 @@ if (isset($_FILES['image_file']) && !empty($_FILES['image_file'])) {
     try {
 
         //Unter Einstellungen > API werden die API Zugangsdaten angezeigt
-        $session = new \Eventraider\EventraiderSession('APP_KEY', 'APP_SECRET');
+        $session = new \Eventraider\EventraiderSession(APP_KEY, APP_SECRET);
 
     } catch (\Eventraider\EventraiderException $e) {
 
@@ -145,8 +147,11 @@ if (isset($_FILES['image_file']) && !empty($_FILES['image_file'])) {
             'end' => $_POST['close'],
             'locationID' => $location->getID(),
             'image' => $_FILES['image_file'],
+            'price' => $_POST['price'],
+            'ageRating' => $_POST['ageRating'],
             'description' => $_POST['description'],
-            'license' => null
+            'specials' => $_POST['specials'],
+            'publish' => true
         );
 
         $request = new \Eventraider\EventraiderRequest(
@@ -183,6 +188,9 @@ if (isset($_FILES['image_file']) && !empty($_FILES['image_file'])) {
 
         }
 
+        if (PRINT_ERROR)
+            echo '<li>Das Event wurde erstellt.</li>';
+
     } else {
 
         if (PRINT_ERROR)
@@ -192,9 +200,6 @@ if (isset($_FILES['image_file']) && !empty($_FILES['image_file'])) {
             error_log('Eventraider: Session konnte nicht initialisiert werden.');
 
     }
-
-    if (PRINT_ERROR)
-        echo '<li>Das Event wurde erstellt.</li>';
 
     unset($_FILES['image_file']);
     echo '<a href="javascript:window.location.href=window.location.href">zurück</a>';
@@ -392,9 +397,16 @@ if (isset($_FILES['image_file']) && !empty($_FILES['image_file'])) {
 
 						<div class="label">Bild</div>
 						<input type="file" name="image_file"> <br />
+						<br />
+
+						Eintritt ab <input name="ageRating" style="width: 25px"/> Jahren <br />
+						Ticketpreis: <input name="price" style="width: 50px"/> € <br />
 
 						<div class="label">Beschreibung</div>
-						<textarea name="description" style="width: 700px; height: 400px"></textarea><br />
+						<textarea name="description" style="width: 700px; height: 200px"></textarea><br />
+
+						<div class="label">Spezialitäten</div>
+						<textarea name="specials" style="width: 700px; height: 200px"></textarea><br />
 
 						<input type="submit" name="submit" value="Event erstellen">
 
