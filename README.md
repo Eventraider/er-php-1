@@ -79,13 +79,16 @@ Melde dich mit deinem Konto an und stelle unter \"Einstellungen > Marker\" deine
 
 	$event = array(
 		'date' => $date,
-		'name' => $_POST['title'],
-		'timeStart' => $_POST['open'],
-		'timeEnd' => $_POST['close'],
+		'title' => $_POST['title'],
+		'start' => $_POST['open'],
+		'end' => $_POST['close'],
 		'locationID' => $location->getID(),
 		'image' => $_FILES['image_file'],
 		'description' => $_POST['description'],
-		'license' => null
+		'specials' => $_POST['specials'],
+		'price' => $_POST['price'],
+		'ageRating' => $_POST['ageRating'],
+		'publish' => true
 	);
 
 	$request = new \Eventraider\EventraiderRequest($session, '/event', 'POST', $event);
@@ -140,13 +143,13 @@ Schnittstelle
 Erklärung der Post typen:
  * Image: Ein Bild als File-Objekt. Erlaubt sind jpeg, jpg und png.
  * String: Eine Zeichenkette
+ * Date: Datum im Format yyyy:mm:dd
  * Time: Uhrzeit im Format hh:mm
  * Double: Eine Zahl mit Nachkommastellen
  * Int: Eine Zahl ohne Nachkommastellen
 
 | URI                            | TYPE   | POST  |  Notiz  |
 | ------------------------------ | ------ | ----- |  ------ |
-| /stream[/{OFFSET}]             | GET    |       |         |
 | /raider/{ID}                   | GET    |       |         |
 | /raider/{ID}/stream[/{OFFSET}] | GET    |       |         |
 | /raider/{ID}/follows[/{OFFSET}]| GET    |       |         |
@@ -158,14 +161,13 @@ Erklärung der Post typen:
 | /page/{ID}/location            | GET    |       |         |
 | /page/{ID}/image               | POST   | file:Image | Ändert das Seiten Banner. |
 | /page/{ID}/images[/{OFFSET}]   | GET    |       |         |
-| /event                         | POST   | title:String{3-36}<br />start:Time<br />end:Time<br />lat:Double{-180-180}<br />lng:Double{-180-180} |        |
+| /event                         | POST   | date:Date<br />title:String{3-255}<br />start:Time<br />end:Time<br />locationID:Int<br />image:Image<br />price:Double{0-200}<br />ageRating:Int{0-99}<br />description:String{3-2000}<br />[specials:String{0-2000}]<br />[publish:Boolean]<br /> |        |
 | /event/{ID}                    | GET    |       |         |
 | /event/{ID}                    | PUT    | description:String | Ändert die Event Beschreibung. |
 | /event/{ID}/image              | POST   | file:Image |         |
 | /event/{ID}/timer              | POST   | name:String{3-36}<br />duration:Int<br />start:Time |         |
 | /event/{ID}/timer[/{OFFSET}]   | GET    |       |         |
 | /event/{ID}/timer/{timerID}    | DELETE |       |         |
-| /event/{ID}/invite             | POST   | email:String | Mehrere Emails können mit einem ";" getrennt werden. |
 | /event/{ID}/images[/{OFFSET}]  | GET    |       |         |
 
 
