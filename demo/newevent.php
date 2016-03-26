@@ -3,6 +3,7 @@
 namespace Eventraider\demo;
 use Eventraider;
 
+//define ('SANDBOX', 1);
 define ('APP_KEY', null);
 define ('APP_SECRET', null);
 define ('PRINT_ERROR', true);
