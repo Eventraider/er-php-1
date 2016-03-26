@@ -93,19 +93,14 @@ class EventraiderRequest {
 
         if (!extension_loaded('curl')) {
 
-            //  cURL installieren (UNIX):
-            //  apt-get install php5-curl
-            //  /etc/init.d/apache2 restart
             throw new EventraiderException("cURL muss als PHP Extension installiert sein.");
 
         }
 
-        //open connection
         $ch = curl_init();
 
         curl_setopt($ch, CURLOPT_URL, $this::URI.$this->function);
 
-        //Header
         $headers = array(
             'Accept: application/json',
             'ER-API-No: '.$this->api_version
@@ -125,7 +120,6 @@ class EventraiderRequest {
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
         curl_setopt($ch, CURLOPT_HEADER, 1);
 
-        //data
         if ($this->method == 'POST') {
 
             curl_setopt($ch, CURLOPT_POST, 1);
@@ -142,7 +136,6 @@ class EventraiderRequest {
 
         if ($this->method == 'POST' || $this->method == 'PUT') {
 
-            // Files Paramter
             if (!empty($this->parameter['image'])) {
 
                 $this->parameter['type'] = $this->parameter['image']['type'];
