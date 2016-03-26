@@ -45,6 +45,11 @@ class EventraiderRequest {
     const URI = 'http://api.eventraider.com/';
 
     /**
+     * @const String Eventraider sandbox API URL
+     */
+    const SANDBOX_URI = 'http://sandbox.api.eventraider.com/';
+
+    /**
      * @var EventraiderSession Session für die Anfragen
      */
     private $session;
@@ -99,7 +104,11 @@ class EventraiderRequest {
 
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, $this::URI.$this->function);
+        if (defined('SANDBOX') && SANDBOX) {
+            curl_setopt($ch, CURLOPT_URL, $this::SANDBOX_URI.$this->function);
+        } else {
+            curl_setopt($ch, CURLOPT_URL, $this::URI.$this->function);
+        }
 
         $headers = array(
             'Accept: application/json',
