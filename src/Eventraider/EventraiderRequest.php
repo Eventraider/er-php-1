@@ -3,7 +3,7 @@
 /**
  * The MIT License (MIT)
  *
- * Copyright (c) 2014 Eventraider
+ * Copyright (c) 2016 Eventraider
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ namespace Eventraider;
  * Class EventraiderRequest
  * @package Eventraider
  *
- * @author Daniel Schultz <dschultz@eventraider.com>
+ * @author Daniel Schultz <daniel.schultz@eventraider.com>
  */
 class EventraiderRequest {
 
