@@ -4,8 +4,6 @@ namespace Eventraider\demo;
 use Eventraider;
 
 //define ('SANDBOX', 1);
-define ('APP_KEY', null);
-define ('APP_SECRET', null);
 define ('PRINT_ERROR', true);
 define ('LOG_ERROR', true);
 define ('ER_SDK_DIR', __DIR__.'/../src/Eventraider/' );
@@ -16,17 +14,14 @@ require_once(ER_SDK_DIR.'EventraiderResponse.php');
 require_once(ER_SDK_DIR.'EventraiderException.php');
 require_once(ER_SDK_DIR.'EventraiderLocation.php');
 
-//Bei Problemen oder Fehlern die '//' der nächsten Zeile entfernen
-//ini_set('display_errors', 1);
-
 function exit_request() {
 
 	echo '
 				</ul>
 			</div>
-            <div id="footer">
-                Eventraider &copy; '.date('Y').' - <a href="http://www.eventraider.com/impressum" title="Nutzungsbestimmungen">Nutzungsbestimmungen</a>
-            </div>
+			<div id="footer">
+				Eventraider &copy; '.date('Y').' - <a href="http://www.eventraider.com/impressum" title="Nutzungsbestimmungen">Nutzungsbestimmungen</a>
+			</div>
 
 		</div>
 	</body>
@@ -40,35 +35,32 @@ function exit_request() {
 <!DOCTYPE html>
 <html>
 	<head>
-    	<title>API Demo</title>
-    	<meta charset="utf-8">
+		<title>API Demo</title>
+		<meta charset="utf-8">
 		<link rel="Stylesheet" href="http://static.eventraider.com/css/eventraider.template.css">
 	</head>
 	<body>
 
 		<div id="header">
 			<div class="content">
-                <div class="caption">Eventraider</div>
+				<div class="caption">Eventraider</div>
 				<div class="navigation">
-                    <a href="http://support.eventraider.com/api" title="API">
-                        API
-                    </a>
-                    <a href="http://support.eventraider.com/signup" title="Registrieren">
-                        Registrieren
-                    </a>
-                    <a href="http://www.eventraider.com" title="Startseite">
-                        Startseite
-                    </a>
+					<a href="http://support.eventraider.com/api" title="API">
+						API
+					</a>
+					<a href="http://support.eventraider.com/signup" title="Registrieren">
+						Registrieren
+					</a>
+					<a href="http://www.eventraider.com" title="Startseite">
+						Startseite
+					</a>
 				</div>
-			</div>	
+			</div>
 		</div>
 
 		<div id="wrapper">
 			<div class="section">
 				<h2>Veranstaltung erstellen</h2>
-
-
-
 
 <?php
 
@@ -83,77 +75,87 @@ if (isset($_FILES['image_file']) && !empty($_FILES['image_file'])) {
 
 <?php
 
-    try {
+	try {
 
-        //Unter Einstellungen > API werden die API Zugangsdaten angezeigt
-        $session = new \Eventraider\EventraiderSession(APP_KEY, APP_SECRET);
+		//Unter Einstellungen > API werden die API Zugangsdaten angezeigt
+		$session = new \Eventraider\EventraiderSession(
+			APP_KEY,
+			APP_SECRET
+		);
 
-    } catch (\Eventraider\EventraiderException $e) {
+	} catch (\Eventraider\EventraiderException $e) {
 
-        if (PRINT_ERROR)
-            echo '<li>Fehler (1): '.$e->getMessage().'</li>';
+		if (PRINT_ERROR) {
+			echo '<li>Fehler (1): '.$e->getMessage().'</li>';
+		}
 
-        if (LOG_ERROR)
-            error_log('Eventraider: '.$e->getMessage());
+		if (LOG_ERROR) {
+			error_log('Eventraider: '.$e->getMessage());
+		}
 
-    }
+	}
 
-    if (isset($session)) {
+	if (isset($session)) {
 
-        //event location holen
-        $request = new \Eventraider\EventraiderRequest(
+		//event location holen
+		$request = new \Eventraider\EventraiderRequest(
 			$session,
 			'me/location',
 			'GET',
 			array('ID' => -1)
 		);
-        try {
 
-            $response = $request->execute();
+		try {
 
-        } catch (\Eventraider\EventraiderException $e) {
+			$response = $request->execute();
 
-            if (PRINT_ERROR)
-                echo '<li>Fehler (2): '.$e->getMessage().'</li>';
+		} catch (\Eventraider\EventraiderException $e) {
 
-            if (LOG_ERROR)
-                error_log('Eventraider: '.$e->getMessage());
+			if (PRINT_ERROR) {
+				echo '<li>Fehler (2): '.$e->getMessage().'</li>';
+			}
 
-            unset($_FILES['image_file']);
-            echo '<li><a href="javascript:window.location.href=window.location.href">zurück</a></li>';
-            exit_request();
+			if (LOG_ERROR) {
+				error_log('Eventraider: '.$e->getMessage());
+			}
 
-        }
+			unset($_FILES['image_file']);
+			echo '<li><a href="javascript:window.location.href=window.location.href">zurück</a></li>';
+			exit_request();
 
-        $location = $response->getLocationObject();
+		}
 
-        if ($location->getID() < 0) {
+		$location = $response->getLocationObject();
 
-            if (PRINT_ERROR)
-                echo '<li>Fehler: Es wurde noch kein Standort gesetzt. <br />
-            Melde dich mit deinem Konto an und stelle unter \"Einstellungen > Marker\" deinen Standort ein.<li>';
+		if ($location->getID() < 0) {
 
-            if (LOG_ERROR)
-                error_log('Eventraider: Es wurde noch kein Standort gesetzt. \n
-            Melde dich mit deinem Konto an und stelle unter \"Einstellungen > Marker\" deinen Standort ein.');
+			if (PRINT_ERROR) {
+				echo '<li>Fehler: Es wurde noch kein Standort gesetzt. <br />
+				Melde dich mit deinem Konto an und stelle unter \"Einstellungen > Anschrift\" deinen Standort ein.<li>';
+			}
 
-        }
+			if (LOG_ERROR) {
+				error_log('Eventraider: Es wurde noch kein Standort gesetzt. \n
+				Melde dich mit deinem Konto an und stelle unter \"Einstellungen > Anschrift\" deinen Standort ein.');
+			}
 
-        $date = $_POST['year'].'-'.$_POST['month'].'-'.$_POST['day'];
+		}
 
-        $event = array(
-            'date' => $date,
-            'title' => $_POST['title'],
-            'start' => $_POST['open'],
-            'end' => $_POST['close'],
-            'locationID' => $location->getID(),
-            'image' => $_FILES['image_file'],
-            'price' => $_POST['price'],
-            'ageRating' => $_POST['ageRating'],
-            'description' => $_POST['description'],
-            'specials' => $_POST['specials'],
-            'publish' => true
-        );
+		$date = $_POST['year'].'-'.$_POST['month'].'-'.$_POST['day'];
+
+		$event = array(
+			'date' => $date,
+			'title' => $_POST['title'],
+			'start' => $_POST['open'],
+			'end' => $_POST['close'],
+			'locationID' => $location->getID(),
+			'image' => $_FILES['image_file'],
+			'price' => $_POST['price'],
+			'ageRating' => $_POST['ageRating'],
+			'description' => $_POST['description'],
+			'specials' => $_POST['specials'],
+			'publish' => true
+		);
 
         $request = new \Eventraider\EventraiderRequest(
 			$session,
@@ -161,59 +163,67 @@ if (isset($_FILES['image_file']) && !empty($_FILES['image_file'])) {
 			'POST',
 			$event
 		);
-        try {
 
-            $response = $request->execute();
+		try {
 
-        } catch (\Eventraider\EventraiderException $e) {
+			$response = $request->execute();
 
-            if (PRINT_ERROR)
-                echo '</li>Fehler (3): '.$e->getMessage().'</li>';
+		} catch (\Eventraider\EventraiderException $e) {
 
-            if (LOG_ERROR)
-                error_log('Eventraider: '.$e->getMessage());
+			if (PRINT_ERROR) {
+				echo '</li>Fehler (3): '.$e->getMessage().'</li>';
+			}
 
-            unset($_FILES['image_file']);
-            echo '<li><a href="javascript:window.location.href=window.location.href">zurück</a></li>';
-            exit_request();
+			if (LOG_ERROR) {
+				error_log('Eventraider: '.$e->getMessage());
+			}
 
-        }
+			unset($_FILES['image_file']);
+			echo '<li><a href="javascript:window.location.href=window.location.href">zurück</a></li>';
+			exit_request();
 
-        if ($response->getCode() != 201) {
+		}
 
-            if (PRINT_ERROR)
-                echo '<li>Fehler: Das Event "'.$_POST['title'].'" konnte nicht erstellt werden.</li>';
+		if ($response->getCode() != 201) {
 
-            if (LOG_ERROR)
-                error_log('Eventraider: Das Event "'.$_POST['title'].'" konnte nicht erstellt werden.');
+			if (PRINT_ERROR) {
+				echo '<li>Fehler: Das Event "'.$_POST['title'].'" konnte nicht erstellt werden.</li>';
+			}
 
-        }
+			if (LOG_ERROR) {
+				error_log('Eventraider: Das Event "'.$_POST['title'].'" konnte nicht erstellt werden.');
+			}
 
-        if (PRINT_ERROR)
-            echo '<li>Das Event wurde erstellt.</li>';
+		}
 
-    } else {
+		if (PRINT_ERROR) {
+			echo '<li>Das Event wurde erstellt.</li>';
+		}
 
-        if (PRINT_ERROR)
-            echo "<li>Fehler (4): Session konnte nicht initialisiert werden.</li>";
+	} else {
 
-        if (LOG_ERROR)
-            error_log('Eventraider: Session konnte nicht initialisiert werden.');
+		if (PRINT_ERROR) {
+			echo "<li>Fehler (4): Session konnte nicht initialisiert werden.</li>";
+		}
 
-    }
+		if (LOG_ERROR) {
+			error_log('Eventraider: Session konnte nicht initialisiert werden.');
+		}
 
-    unset($_FILES['image_file']);
-    echo '<a href="javascript:window.location.href=window.location.href">zurück</a>';
+	}
 
-	?>
+	unset($_FILES['image_file']);
+	echo '<a href="javascript:window.location.href=window.location.href">zurück</a>';
+
+?>
 
 				</ul>
 
-	<?php
+<?php
 
 } else {
 
-    ?>
+?>
 
 				<div class="content">
 					<form method="post" enctype="multipart/form-data">
@@ -422,10 +432,9 @@ if (isset($_FILES['image_file']) && !empty($_FILES['image_file'])) {
 ?>
 
 			</div>
-            <div id="footer">
-                Eventraider &copy; <?php echo date('Y'); ?> - <a href="http://www.eventraider.com/impressum" title="Nutzungsbestimmungen">Nutzungsbestimmungen</a>
-            </div>
-
+			<div id="footer">
+				Eventraider &copy; <?php echo date('Y'); ?> - <a href="http://www.eventraider.com/impressum" title="Nutzungsbestimmungen">Nutzungsbestimmungen</a>
+			</div>
 		</div>
 	</body>
 </html>

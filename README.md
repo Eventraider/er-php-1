@@ -6,6 +6,19 @@ Beispiele sind unter "demo" zu finden.<br />
 <br />
 Die Zugangsdaten befinden sich unter Einstellungen -> API, der jeweiligen Seite.
 
+Sandbox
+--------------
+
+Im Sandbox Modus werden alle Daten an die Server übertragen und verarbeitet.
+Diese werden allerdings nicht dauerhaft gespeichert. <br />
+
+Damit die Sandbox angesteurt werden kann, muss folgende Konstante definiert werden
+
+```php
+
+define ('SANDBOX', 1);
+
+```
 
 Beispiel
 --------------
@@ -29,32 +42,41 @@ require_once(ER_SDK_DIR.'EventraiderLocation.php');
 
 try {
 
-	$session = new \Eventraider\EventraiderSession('APP_KEY', 'APP_SECRET');
+	$session = new \Eventraider\EventraiderSession(
+		APP_KEY,
+		APP_SECRET
+	);
 
 } catch (\Eventraider\EventraiderException $e) {
 
-	if (PRINT_ERROR)
+	if (PRINT_ERROR) {
 		echo 'Fehler: '.$e->getMessage()."\n";
+	}
 
-	if (LOG_ERROR)
+	if (LOG_ERROR) {
 		 error_log('Eventraider: '.$e->getMessage());
+	}
 
 }
 
 if (isset($session)) {
 
-	$request = new \Eventraider\EventraiderRequest($session, '/me/location', 'GET', array('ID' => -1));
+	$request = new \Eventraider\EventraiderRequest($session, '/me/location',
+		'GET', array('ID' => -1));
+
 	try {
 
 		$response = $request->execute();
 
 	} catch (\Eventraider\EventraiderException $e) {
 
-		if (PRINT_ERROR)
+		if (PRINT_ERROR) {
 			echo 'Fehler: '.$e->getMessage()."\n";
+		}
 
-		if (LOG_ERROR)
+		if (LOG_ERROR) {
 			error_log('Eventraider: '.$e->getMessage());
+		}
 
 		exit();
 
@@ -63,13 +85,15 @@ if (isset($session)) {
 
 	if ($location->getID() < 0) {
 
-		if (PRINT_ERROR)
+		if (PRINT_ERROR) {
 			echo "Fehler: Es wurde noch kein Standort gesetzt. \n
 Melde dich mit deinem Konto an und stelle unter \"Einstellungen > Marker\" deinen Standort ein.";
+		}
 
-		if (LOG_ERROR)
+		if (LOG_ERROR) {
 			error_log('Eventraider: Es wurde noch kein Standort gesetzt. \n
 Melde dich mit deinem Konto an und stelle unter \"Einstellungen > Marker\" deinen Standort ein.');
+		}
 
 		exit();
 
@@ -91,18 +115,22 @@ Melde dich mit deinem Konto an und stelle unter \"Einstellungen > Marker\" deine
 		'publish' => true
 	);
 
-	$request = new \Eventraider\EventraiderRequest($session, '/event', 'POST', $event);
+	$request = new \Eventraider\EventraiderRequest($session, '/event', 'POST',
+		$event);
+
 	try {
 
 		$response = $request->execute();
 
 	} catch (\Eventraider\EventraiderException $e) {
 
-		if (PRINT_ERROR)
+		if (PRINT_ERROR) {
 			echo 'Fehler: '.$e->getMessage()."\n";
+		}
 
-		if (LOG_ERROR)
+		if (LOG_ERROR) {
 			error_log('Eventraider: '.$e->getMessage());
+		}
 
 		exit();
 
@@ -110,25 +138,29 @@ Melde dich mit deinem Konto an und stelle unter \"Einstellungen > Marker\" deine
 
 	if ($response->getCode() != 201) {
 
-		if (PRINT_ERROR)
+		if (PRINT_ERROR) {
 			echo "Fehler: Das Event \"".$_POST['title']."\" konnte nicht erstellt werden.\n";
+		}
 
-		if (LOG_ERROR)
+		if (LOG_ERROR) {
 			error_log('Eventraider: Das Event "'.$_POST['title'].'" konnte nicht erstellt werden.');
+		}
 
 	} else {
 
-        	echo $response->getData()."\n";
+			echo $response->getData()."\n";
 
 	}
 
 } else {
 
-	if (PRINT_ERROR)
+	if (PRINT_ERROR) {
 		echo "Fehler: Session konnte nicht initialisiert werden.\n";
+	}
 
-	if (LOG_ERROR)
+	if (LOG_ERROR) {
 		error_log('Eventraider: Session konnte nicht initialisiert werden.');
+	}
 
 }
 ```
