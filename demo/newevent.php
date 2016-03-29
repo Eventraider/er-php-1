@@ -157,7 +157,7 @@ if (isset($_FILES['image_file']) && !empty($_FILES['image_file'])) {
 			'publish' => true
 		);
 
-        $request = new \Eventraider\EventraiderRequest(
+		$request = new \Eventraider\EventraiderRequest(
 			$session,
 			'event',
 			'POST',
