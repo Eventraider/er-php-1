@@ -12,7 +12,7 @@ Sandbox
 Im Sandbox Modus werden alle Daten an die Server übertragen und verarbeitet.
 Diese werden allerdings nicht dauerhaft gespeichert. <br />
 
-Damit die Sandbox angesteurt werden kann, muss folgende Konstante definiert werden
+Damit die Sandbox angesteuert werden kann, muss folgende Konstante definiert werden:
 
 ```php
 
